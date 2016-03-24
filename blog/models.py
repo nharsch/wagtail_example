@@ -3,24 +3,34 @@ from django.db import models
 from wagtail.wagtailcore.models import Page
 from wagtail.wagtailcore.fields import RichTextField
 from wagtail.wagtailadmin.edit_handlers import FieldPanel
+from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtailsearch import index
 
 
 class BlogPage(Page):
+    main_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+"
+    )
     # we can use django fields
     date = models.DateField("Post date")
     intro = models.CharField(max_length=250)
     # or wagtail fields
     body = RichTextField(blank=True)
+
     search_fields = Page.search_fields + (
-        index.SearchField('into'),
+        index.SearchField('intro'),
         index.SearchField('body'),
     )
 
     content_panels = Page.content_panels + [
         FieldPanel('date'),
+        ImageChooserPanel('main_image'),
         FieldPanel('intro'),
-        FieldPanel('body', classname="full")
+        FieldPanel('body'),
     ]
 
 
