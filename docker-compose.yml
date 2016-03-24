@@ -1,0 +1,14 @@
+db:
+  image: postgres
+web:
+  build: .
+  volumes:
+    - .:/code
+
+  command: ./manage.py runserver "0.0.0.0:8000"
+  links:
+    - db
+  ports:
+    - "5000:8000"
+  environment:
+    DATABASE_URL: postgres://postgres:postgres@db:5432/postgres

@@ -2,3 +2,6 @@ blog/migrations
 media
 db.sqlite3
 */__pycache__/*
+home/migrations
+**/__pycache__**
+**__pycache__**
